@@ -3954,3 +3954,5 @@ const PORT = prcoess.env.PORT || 4000; <- heroku에서만 동작하니까 heroku
 
 변수가 OR 연산을 통해 둘다 가질 수 있다니 아주 놀랍다.
 
+그리고 파일을 수정 했으니 git commit, push 이런거 또 해줘야한다.
+

@@ -3840,6 +3840,8 @@ Logged in as si932174@gmail.com
 $ git init
 Reinitialized existing Git repository in /Users/seunghoon/Desktop/IhaveaDream/노마드코더/노마드코더강의용/Wetube/.git/
 
+$ git add .
+
 $ heroku git:remote -a wetube-hoon
 set git remote heroku to https://git.heroku.com/wetube-hoon.git
 
@@ -3872,4 +3874,83 @@ $ git push heroku master
 
 근데 배포하기 전에 다른 commend를 먼저 실행 할 거다.
 server나 Heroku의 로그를 볼 수 있게 해주는 commend 이다.
+
+$ heroku logs --tail -> 이거다.
+요건 우리에게 서버를 보여준다.
+--tail은 실시간으로 로그를 보여주게 하는 명령어다.
+
+___________________________________________________________________________________________________
+2022-03-31T13:57:25.406138+00:00 app[api]: Release v1 created by user si932174@gmail.com
+2022-03-31T13:57:25.406138+00:00 app[api]: Initial release by user si932174@gmail.com
+2022-03-31T13:57:26.354641+00:00 app[api]: Release v2 created by user si932174@gmail.com
+2022-03-31T13:57:26.354641+00:00 app[api]: Enable Logplex by user si932174@gmail.com
+___________________________________________________________________________________________________
+
+지금 당장의 위의 로그처럼 아무것도 없다.
+근디 이제 
+$ git push heroku master
+이거를 해주는데
+아니 근데 .env파일에 있는걸 git ignore헀기 때문에 .env가 Heroku에 없다.
+그래서 뭐 Heroku에는 DB_URL도 없고 뭐 암튼 다없어서 그래서 DB가 없다.
+요걸 어떻게 해야할까
+
+
+
+
+# Mongo Atlas
+
+일단 사이트 들어가서 가입부터 하고
+클러스터를 만들건데 클러스터는 DB group 같은거다.
+
+물론 DB 하나만 사용 할 거다.
+
+mongodb+srv://hoon0123:<password>@cluster0.xvt9t.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+  -> mongodb+srv://hoon0123:ihaveadream0628!@cluster0.xvt9t.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
+흠...뭐 이것저것 뭐 가입하고 어쩌고 해서 mongo Atlas에서 DB를 만들었고 
+그렇게 최종적으로 받은게 위의 URl인데 
+
+우리 문제가 뭐였냐면 process.env.DB_URL 이 heroku에 없다는게 문제였다.
+
+자 이제 뭐 가입하고 만들어서 DB의 URL을 얻었지만 어떻게 process.env.DB_URL에 둬야할지 모른다.
+
+다시말하자면 .env파일을 업로드하거나 수정할 수 없다.
+그렇게 하지 않을거다.
+
+그래서 Heroku의 admin panel을 사용해서 이 DB_URL을 설정 할 거다.
+
+이야 근데 Heroku의 setting에서 변수를 저장하는게 가능하게 거기에 저장한다.
+
+지금까지는 내 컴퓨터에서 .env파일에 있는 DB_URL을 설정했다.
+이제 Heroku를 사용할 땐 더이상 그렇게 못한다.
+Heroku를 쓸 땐 웹사이트에서 변수를 설정할 수 있다.
+
+변수설정하면 아래처럼 로그에 --tail 한 그 로그에 
+아래처럼 뜬다.
+
+2022-03-31T15:22:51.882182+00:00 app[api]: Set DB_URL config vars by user si932174@gmail.com
+2022-03-31T15:22:51.882182+00:00 app[api]: Release v5 created by user si932174@gmail.com
+
+자 일단 여기까지 
+.env가 아니라 heroku에서 process.env 변수를 설정했다.
+
+
+# Environment Variables
+
+Heroku가 나의 서버로 연결을 시도했다.
+나의 서버는 포트 4000으로 열려있다.
+하지만 대부분의 경우 포트 4000은 Heroku가 우리에게 준게 아니다.
+대부분 Heroku는 랜덤으로 PORT를 준다.
+
+그래서 4000으로 연결하면 안된다.
+
+Heroku가 우리에게 준 PORT로 연결해야한다.
+그러니 init.js에서 아래처럼 PORT를 heroku에서 받도록 바꿔준다.
+
+***************************************************************************************************************************************
+(init.js)
+const PORT = prcoess.env.PORT || 4000; <- heroku에서만 동작하니까 heroku에서 준거 아니면 4000
+***************************************************************************************************************************************
+
+변수가 OR 연산을 통해 둘다 가질 수 있다니 아주 놀랍다.
 

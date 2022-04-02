@@ -1,7 +1,7 @@
 import mongoose, { connection } from "mongoose";
 
 mongoose.connect(process.env.DB_URL, {
-});
+}); 
 
 const db = mongoose.connection;
 

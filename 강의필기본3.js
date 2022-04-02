@@ -3956,3 +3956,8 @@ const PORT = prcoess.env.PORT || 4000; <- heroku에서만 동작하니까 heroku
 
 그리고 파일을 수정 했으니 git commit, push 이런거 또 해줘야한다.
 
+우와 이제 들어가진다.
+
+우와아. 로컬이 아니라 인터넷으로 나의 위튜브에 접속이 가능하다.
+
+

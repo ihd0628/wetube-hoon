@@ -3961,3 +3961,5 @@ const PORT = prcoess.env.PORT || 4000; <- heroku에서만 동작하니까 heroku
 우와아. 로컬이 아니라 인터넷으로 나의 위튜브에 접속이 가능하다.
 
 
+git hub token
+vscode://vscode.github-authentication/did-authenticate?windowid=1&code=ba968eee10330a40fc1d&state=1a93e8b7-4359-4981-a590-c169877027ba

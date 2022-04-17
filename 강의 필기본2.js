@@ -512,7 +512,8 @@ multer에는 configuration object가 있다.
 
 ****************************************************************************************************************        
 (middleware.js)
-import multer from "multer"import Video from "./models/Video"
+import multer from "multer"
+import Video from "./models/Video"
 import videoRouter from "./routers/videoRouter"
 import { watch } from "./controllers/videoController"
 import { Mongoose } from "mongoose"

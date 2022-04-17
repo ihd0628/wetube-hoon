@@ -340,7 +340,7 @@ export const postChangePassword = async (req, res, next) => {
             errorMessage: "The password does not match the confirmation", 
          })
     }
-    const user = await User.findByIdAndDelete(_id);         <- 여기서 user 찾아주고 
+    const user = await User.findById(_id);         <- 여기서 user 찾아주고 
     user.password = newPassword;                            <- 변경한 비밀번호 넣어주고 
     await user.save();                                               <- 저장 
     return res.redirect("/");

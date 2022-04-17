@@ -6157,7 +6157,7 @@ userRouter.get("/github/finish", publicOnlyMiddleware,finishGithubLogin);
 
 publicOnlyMiddleware, protectorMiddleware로 우리의 URL 구조는 더욱 견고해졌다. 
 이제 이 미들웨어들을 곳곳의 라우터들에게 다 적용시키면 된다. 뭐 예를들어 홈페이지는 누가나 오는거니까 안해도 되고  
-/login, /join은 로그아웃된 사람만 갈수있고 뭐 이런거 
+/login, /join은 로그아웃된 사람만 갈수있고 뭐 이런거  
 
 edit-profile 마무리 
 edit-profile.pug 에서 user가 post request를 보내면 body를 받을 수 있다. 
@@ -6165,7 +6165,8 @@ edit-profile.pug 에서 user가 post request를 보내면 body를 받을 수 있
 일단 user modeil이 있는걸 확인하고
  -> 최상단 User 확인 왜냐하면 우리는 저 User model을 통해서(mongo를 통해서) findById 뭐 이런걸 할 수 있는거니까. 
 
- *******************************************************************************************************       (userController.js)
+ *******************************************************************************************************       
+ (userController.js)
   
  export const postEdit = async (req, res) => {              <- 밑에 await 쓰니까 async 넣어주고 
     const { name, email, username, location } = req.body;

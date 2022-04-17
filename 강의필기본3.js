@@ -3963,3 +3963,17 @@ const PORT = prcoess.env.PORT || 4000; <- heroku에서만 동작하니까 heroku
 
 git hub token
 vscode://vscode.github-authentication/did-authenticate?windowid=1&code=ba968eee10330a40fc1d&state=1a93e8b7-4359-4981-a590-c169877027ba
+
+
+
+
+#  AWS S3
+
+근디 이거 git push 해줄 때 마다 이거 내 비디오랑 썸네일파일이랑 다 없어진다.
+왜냐믄 새로 배포 할 떄 마다 Heroku에서 서버를 재구성하면서 파일들도 다 없어지기 때무니다.
+
+근디 나는 일단 프론트엔드를 지향하고 그쪽으로 공부할것이 많다.
+글고 AWS 가입할 때 카드번호 입력하는거 좀 맘에 안듬.
+
+그동안 수고 많았습니다. 으아
+2022.01 ~ 2022.04 위튜브 강의 완강.

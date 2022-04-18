@@ -569,6 +569,8 @@ multer는 멋지기 때문에, input으로 avatar 파일을 받아서 그 파일
 하지만 아직 req.file은 어떻게 생겼는지 모른다. 
 console.log(file); 해보면 
 
+(console.log(file))
+
 file:  {
     fieldname: 'avatar',
     originalname: '6A9D93FA-8BBE-4219-A8D1-CB5CB8877298.jpeg',

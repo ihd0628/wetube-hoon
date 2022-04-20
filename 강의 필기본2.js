@@ -1294,7 +1294,7 @@ User의 모든 정보 뭐 username, socialOnly. email..등등 하여간 그냥 �
     -> 알려주고 저장하는건 watch.pug에서 해준겨 
 그래서 이름을 다 통일하고 사전에 모든 model들을 import 해주는게 좋은거다.import { AutomaticPrefetchPlugin, webpack } from "webpack"
 import { config } from "dotenv"
- (init.ja에서 import)
+ (init.js에서 import)
 그래야 mongoose가 우리를 도와줄 수 있다.  
 ************************************************************************************************************
 (populate("owner") 후 console.log(video);)
@@ -1391,7 +1391,7 @@ video는 하나의 user를 가지지만 user는 여러 videos를 가질 수 있�
 videos array안에는 object들로 구성되어질거다. 
 정확히는 ObjectId를 가지는 array가 되는것이다. 
 
-videos늰 Video model에 연결된 ObjectId로 구성된 array다. 
+videos는 Video model에 연결된 ObjectId로 구성된 array다. 
 그리고 이건 배열이니까 많은 video 객체를 담을 수 있다. 
 ************************************************************************************************************
 (Video.js)
@@ -1493,7 +1493,7 @@ block content
 
 populate 하나로 이렇게 정리가 된다. 
 
-이제 나는 여러개의 video와 user가 어떻게 relationship을 가지면 되는지 알았다. 
+이제 나는 여러개의 video와 user가 어떻게 relationship을 가지면 되는지 알았다.   
  
 # Bug fix 
 
@@ -1515,7 +1515,7 @@ userSchema.pre("save", async function () {
 
 특정조건은 비밀번호를 수정할 때만 hash를 하게 해줄거다. 
 
-this의 메소드중에 .idModified("property") 라는게 있는데 
+this의 메소드중에 .isModified("property") 라는게 있는데 
 이것은 "property" 가 수정되면 this.isModified()  가 true를 반환해주는 메소드 이다. 
 
 ******************************************************************************************
@@ -1525,7 +1525,7 @@ userSchema.pre("save", async function () {
     this.password = await bcrypt.hash(this.password, 5) 
 })
 
-2. 이렇게 바꿔주면 password가 수정됬을 때 에만 hash해주게 되느거다. 
+2. 이렇게 바꿔주면 password가 수정됬을 때 에만 hash해주게 되는거다. 
 userSchema.pre("save", async function () {
     if(this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 5) ;
@@ -1570,7 +1570,7 @@ export const getEdit = async (req, res) => {
 # Webpack 
 
 package.json을 보면 우리는 Babel Node를 사용하고 있다. 
-극리고 우리가 Babel Node를 사용하였기 때문에 우리는 우리가 원하는 대로 코드를 써도 
+그리고 우리가 Babel Node를 사용하였기 때문에 우리는 우리가 원하는 대로 코드를 써도 
 Node.js 가 이해할 수 있는거다. 
 이와 유사한걸 Front End javascript에서도 해줘야 한다. 
 
@@ -1592,7 +1592,7 @@ SCSS(Sassy CSS)이다.
 
 javascript에서도 마찬가지이다. 
 여러가지 다양한 기술들을 쓰고 싶어도 브라우저가 이해를 못 할 수도 있고, 
-크롱에서는 되는데 사파리에서는 안될수도 있다. 
+크롬에서는 되는데 사파리에서는 안될수도 있다. 
 
 그러니까 지금 원하는건 프론트엔드에서 javascript를 작성하면
 모든 브라우저에서 인식 가능한 javascript로 바꿔주는 뭔가가 필요하다는 것이다. 
@@ -1649,7 +1649,7 @@ require나 module.export 같은 예전 버전의 코드로 적어줘야한다.
 저장경로는 path 에 입력해주면 된다. 
 
 ******************************************************************************************
-(webpack.config.json)
+(webpack.config.js)
 
 module.exports = {
     entry: "./src/client/js/main.js", <- 그냥 뭐 경로 입력이다. 
@@ -1681,7 +1681,6 @@ script는 명령어들을 좀 더 짧게 사용하는데 쓰인다는걸 잊지 
 ******************************************************************************************
 "scripts": {
     "dev": "nodemon --exec babel-node ./src/init.js ",
-    "설명": "원래는 그냥 node index.js로 실행했었는데 우리가 @babel/node를 설치했기 때문에 babel-node라는 명령어를 쓸 수 있는거야. nodejs를 실행시키는데 babel도 같이 적용되서 최신문법코드를 동작 시킬 수 있지.",
     "assets": "webpack --config webpack.config.js"  <-- 요기 요거 입력한거임 
   }
 ******************************************************************************************
@@ -1690,12 +1689,12 @@ script는 명령어들을 좀 더 짧게 사용하는데 쓰인다는걸 잊지 
 $ npm run assets
 을 통해 webpack을 실행하면 에러가 뜬다. 
 
-******************************************************************************************
+******************************************************************************************************************************************
 (error)
 [webpack-cli] Invalid configuration object. Webpack has been initialized using a configuration object that does not match the API schema.
 - configuration.output.path: The provided value "./assets/js" is not an absolute path!
 -> The output directory as **absolute path** (required).
-******************************************************************************************
+******************************************************************************************************************************************
 
 webpack의 아웃풋 경로는 절대 경로로 설정해야지 상대 경로로 설정하면 안된다고 에러가 나왔다. 
 
@@ -1763,7 +1762,7 @@ module이 뭐고 rules가 뭔소리며 이름을 왜 이따위로 지었는지�
 
 그리고 test라고 입력. 우리가 주는 regular expression 들을 확인해야 하니까.
 아래와 같은 경우에 지금 우리가 하는건 모든 javascript 파일들을 가져다가 
-몊가지 변환을 시키고자 하는것이다. 
+몇가지 변환을 시키고자 하는것이다. 
 
 그리고 우리는 babel loader를 사용함으로서 최신 Javascript코드를 구버전으로 바꿔주는 변환을 시켜줄거다.  
 @babel/core를 설치해야 하지만 우린 이미 했고 
@@ -1811,7 +1810,7 @@ module.exports = {
 자 이렇게 한게 뭐냐면 
 javascript 코드를 babel-loader라는 loader로 가공하는거다. 
 webpack은 node_modules에서 babel-loader를 찾을거고 
-그리고 우린ㄴ 몇가지 옵션들을 전달하는거다. 
+그리고 우린 몇가지 옵션들을 전달하는거다. 
 그게 다다...
 (아 그러니까 webpack.config.js는 프론트엔드의 package.json이랑 얼추 비슷한거구나.)
 
@@ -1900,7 +1899,7 @@ $ npm run assets
 
 # Webpack Configuration Part Three
 
-client 폴더가 앞으로 프론트엔드를 코딩할 폴더다.(webpack이 처리하기전) 
+client 폴더가 앞으로 프론트엔드를 코딩할 폴더다.(webpaㅁck이 처리하기전) 
 그리고 assets 폴더는 브라우저가 접근해서 볼 폴더이다. 
 브라우저는 assests/js 안의 main.js 파일을 읽어갈거다.(webpack이 처리한 후)
 
@@ -1913,7 +1912,7 @@ EXPRESS에게는 아직 존재하지 않는 폴더랑 파일이기 때문이다.
 uploads할때와 동일하게 처리해줄건데 
 EXPRESS보고 사람들이 그 폴더안에 파일들에게 접근할수있게 해달라고 요청했듯이 동일하게. 
 기본적으로 폴더들은 공개되어있지 않다. 그러니 따로 요청을 해야하는거다.(express.static())
-서버가 오떤 폴더를 공개할지 정하는거다. 
+서버가 어떤 폴더를 공개할지 정하는거다. 
 
 이제 assets 폴더를 공개해주자. 
 server.js에 static을 사용해주면된다. 
@@ -2176,7 +2175,7 @@ html(lang="ko")
 ******************************************************************************************
 
 위에서 한거처럼 하고싶다..?
-잘 이해햐애한다...
+잘 이해해야한다...
 
 sass-loader -> css-loader -> style-loader
 위 3개의 loader만으로 우리가 원하는 scss코드를 적을 수 있고 
@@ -2409,7 +2408,6 @@ package.json에서
 "scripts": {
     "dev": "nodemon --exec babel-node ./src/init.js " <- 원래 이건데 
     "dev": "nodemon",   <- 이렇게 수정해주면 됨,
-    "설명": "원래는 그냥 node index.js로 실행했었는데 우리가 @babel/node를 설치했기 때문에 babel-node라는 명령어를 쓸 수 있는거야. nodejs를 실행시키는데 babel도 같이 적용되서 최신문법코드를 동작 시킬 수 있지.",
     "assets": "webpack --config webpack.config.js"
   }
 ******************************************************************************************

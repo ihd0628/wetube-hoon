@@ -6,7 +6,7 @@ const { watch } = require("../webpack.config")
 # Player Setup
 
 플레이어를 직접 만들어볼거다.
-그전에 우리 webpack이 어떻게 설정되어있는지 확인해볼거다.
+그전에 우리 webpack이 어떻게 설정되어있는지 확인해볼거다.호
 webpack에는 진입점(entry point)이 있다.
 
 ***************************************************************************************************************************************
@@ -55,7 +55,7 @@ module.exports = {
         }),
     ],
     output: {
-        filename: "js/[name].js",                   <- 여기러 output filename을 변수로 받는다.
+        filename: "js/[name].js",                   <- 여기서 output filename을 변수로 받는다.
         path: path.resolve(__dirname, "assets"),
         clean: true,
     }
@@ -135,7 +135,7 @@ input form에 대한 스타일을 전부 크게 설정해놓았기 때문에 not
 ***************************************************************************************************************************************
 (form.scss)
 
-input:not(input[type="range"]) {                                    <- 요기서 not으로 제외시켜주고
+input:not(input[type="range"]) {                   <- 요기서 not으로 제외시켜주고
     all: unset;
     padding: 15px 20px;
     border-radius: 5px;
@@ -157,7 +157,7 @@ input:not(input[type="range"]) {                                    <- 요기서
   block content
       video(src="/" + video.fileUrl, controls)
       div
-          button#play Play                                          <- 요기서 특정 HTML을 만들고 마크업 해준다. 그리고 아이디로 구분지어준다.
+          button#play Play                        <- 요기서 특정 HTML을 만들고 마크업 해준다. 그리고 아이디로 구분지어준다.
           button#mute Mute
           span#time 00:00/00:00
           input(type="range", step="0.1", min="0", max="1")#volume
@@ -178,7 +178,8 @@ const video = document.querySelector("video");
 const play = document.getElementById("play");
 const mute = document.getElementById("mute");
 const time = document.getElementById("time");
-const volume = document.getElementById("volume");***************************************************************************************************************************************
+const volume = document.getElementById("volume");
+***************************************************************************************************************************************
 
 자 이제 이것들을 javascript에서 우린 쓸수있게 되었다.
 
@@ -216,7 +217,7 @@ video에 addEventListener를 사용하여 만들어볼거다.
 
 video element에는 "pause"라는 이벤트가 있고 비디오가 멈추면 발생하는 이벤트다(click도 이벤트다. 동일한 맥락임)
 이게 별로 맘에 안드는 방법일지도 모르지만 좋은 코딩은 세분화되어 구조화된 코딩이고
-가각의 펑션이 하나의 기능들을가지고 역할을 잘 수행하기 때문에 이것이 더 좋은 코딩이다.
+각각의 function이 하나의 기능들을가지고 역할을 잘 수행하기 때문에 이것이 더 좋은 코딩이다.
 
 
 ***************************************************************************************************************************************
@@ -334,7 +335,7 @@ video element에는 volume 이라는 프로퍼티가 있는데 이거가 그냥 
 초기 video.volume의 값을 0.5로 volumeRange의 기본값과 동일하게 맞춰 주고
 드래그할 때마다 움직임을 감지하여 일치시켜주면 된다.
 
-change라는 even를 사용하면 된다.
+change라는 event를 사용하면 된다.
 아니 근데 change는 마우스를 드래그 하고 놓았을 때만 발생하는 이벤트다.
 나는 마우스를 드래그하면 자연스럽게 볼륨도 같이 변하게하는 기능을 구현하고싶다.
 
@@ -370,6 +371,40 @@ volumeRange.addEventListener("input", handleVolumeRange);       <- "input" 이�
 
 이제 뮤트였다가 뮤트상태해재를 위해 다시 버튼을 누르면 원래 볼륨으로 돌아가는 기능을 구현할거다.
 
+아래처럼 전역변수로 volumeValue라느걸 만들고 기본 초기값으로 0.5가 설정되게 넣어준다.
+(왜냐면 HTML에서 초기 value 0.5로 해줬으니까 맞춰준거다.)
+그리고 volumeRange를 움직일 때 마다 그 값을 volueValue에 넣어준다. 
+그렇게 되면 mute했다가 unmute했을 때 volumeValue의 값을 가져와서 다시 넣어줄 수 있다.
+
+***************************************************************************************************************************************
+(videoPlayer.js)
+
+let volumeValue = 0.5
+video.volume = volumeValue;
+
+const handleMuteClick = (event) => {
+    if(video.muted) {
+        video.muted = false;
+    }   else {
+        video.muted = true;
+    }
+    muteBtn.innerText = video.muted ? "Unmute" : "Mute" ;
+    volumeRange.value = video.muted ? 0 : volumeValue ;
+};
+
+const handleVolumeRange = (event) => {
+    const {
+        target: {value},
+    } = event;
+    if(video.muted) {
+        video.muted = false;
+        muteBtn.innerText = "Mute";
+    }
+    console.log(value);
+    volumeValue = value;
+    video.volume = value;
+}
+***************************************************************************************************************************************
 
 # Duration and Current Time
 
@@ -397,10 +432,11 @@ block content
             span /
             span#totalTime 00:00
 
-(videoPlayer.js)
-
 block scripts
     script(src="/static/js/videoPlayer.js")
+
+
+(videoPlayer.js)
 
     const handleLoadedMetadata = () => {
         totalTime.innerText = Math.floor(video.duration);   <- 비디오 시간이 들어감 초단위 그리고 소수점 지워줌(Math.floor 사용하여)
@@ -572,7 +608,7 @@ block content
         div
             input(type="range", step="1", value=0, min="0")#timeline
         div
-            button#fullScreen Enter Full Screen
+            button#fullScreen Enter Full Screen  <- 요기 요거 버튼!
 
 block scripts
     script(src="/static/js/videoPlayer.js")
@@ -624,9 +660,22 @@ document.fullscreenElement 라는게 있다.
 현재 풀스크린모드인 element가 우리한테 element를 준다는거다.
 
 document.fullscreenElement 가 null 을 반환한다면 풀스크린모드인 element가 없다는거다.
+그러니 document.fullscreenElement 의 값을 이용하여 조건문을 사용하여 동작하게 컨트롤러를 만들어주면 된다. 
 
+***************************************************************************************************************************************
+(videoPlayer.js)
 
-
+const handleFullscreen = (event) => {
+    const fullscreen = document.fullscreenElement;
+    if(fullscreen) {
+        document.exitFullscreen();
+        fullScreenBtn.innerText = "Enter Full Screen";
+    } else {
+        videoContainer.requestFullscreen();
+        fullScreenBtn.innerText = "Exit Full Screen";
+    }
+};
+***************************************************************************************************************************************
 
 # Controls Events part One
 
@@ -767,7 +816,7 @@ video.addEventListener("mouseleave", handleMouseLeave);
 마우스가 비디오안에서 계속 움직이면 컨트롤러를 띄우지만 멈추고 2초지나면 컨트롤러가 사라지게할거다.
 
 근데 "mousestop" 이라는 event는 없으므로 setTimeout과 clearTimeout을 사용할거다.
-매번 마우스가 움직일 때 마다 setTimeout을 시작시킬거다. 그리고 이 setTimeout은 마우스를 사라지게해주는 역할을 할거다.
+매번 마우스가 움직일 때 마다 setTimeout을 시작시킬거다. 그리고 이 setTimeout은 컨트롤러를 사라지게해주는 역할을 할거다.
 그리고 마우스가 계속 움직이면 setTimeout을 취소시킬거다.
 이건 아주 빨리 일어날거고 handleMouseMove function에서 수행시킬거다.
 
@@ -924,7 +973,7 @@ apiRouter.post("videos/:id([0-9a-f]{24})/view", registerView);
 요기에서 저 URL 을 프론트엔드에서 호출해야한다.
 
 우리는 보통 브라우저에서 URL 을 호출하는것에 익숙하다.
-그냥 주소창에 URL 을 치면 되니까 그리고 그러면 백엔드의 컨트롤러를 실해시키니까
+그냥 주소창에 URL 을 치면 되니까 그리고 그러면 백엔드의 컨트롤러를 실행시키니까
 
 그런데 이번에는 이런 이동 없이 URL을 호출하는 방법을 사용해볼거다.
 interactive하게 만들 수 있는 가장 기본적인 방법이다.
@@ -1038,7 +1087,7 @@ block scripts
 (videoPlayer.js)
 
 const handleEnded = () => {
-    const { id } = videoControls.dataset;       <- 요기서 vide의 id를 가져올수있는거다.
+    const { id } = videoControls.dataset;       <- 요기서 video의 id를 가져올수있는거다.
     fetch(`/api/videos/${id}/view`);
 }
 ***************************************************************************************************************************************
